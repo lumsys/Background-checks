@@ -26,10 +26,15 @@ Route::namespace('API')->group(function () {
    
 Route::middleware(['auth:api'])->group(function () {
     // User Update and related activity
+    
        Route::get('details', 'AuthController@details');
        Route::get('logout', 'AuthController@logout');
+
+       // Cleints Users CRUD Functions
+
        Route::post('CreateUsers', 'ClientController@CreateUsers');
        Route::get('getUser', 'ClientController@getUser');
+       Route::get('UpdateClientUser/{id}', 'ClientController@UpdateClientUser');
        });
    });       
 
