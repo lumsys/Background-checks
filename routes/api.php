@@ -28,6 +28,8 @@ Route::middleware(['auth:api'])->group(function () {
     // User Update and related activity
        Route::get('details', 'AuthController@details');
        Route::get('logout', 'AuthController@logout');
+       Route::post('CreateUsers', 'ClientController@CreateUsers');
+       Route::get('getUser', 'ClientController@getUser');
        });
    });       
 
