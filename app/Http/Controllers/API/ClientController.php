@@ -54,5 +54,16 @@ public function CreateUsers(Request $request)
                 return response()->json(['success' => true, $getUser]);
             }
 
+
+            public function UpdateClientUser(Request $request, $id)
+    {
+        //
+                     $ClientsUser=User::find($id);
+                     $ClientsUser->update($request->all());
+                     return response()->json(['success' => true, $ClientsUser]);
+                    
+
+    }
+
         
 }
