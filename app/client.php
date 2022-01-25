@@ -9,7 +9,7 @@ class client extends Model
     //
     public function user()
     {
-        return $this->hasOne(client::class, 'clientId', 'id');
+        return $this->belongToMany(User::class);
     }
     
 }

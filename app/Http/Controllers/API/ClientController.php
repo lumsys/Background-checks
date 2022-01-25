@@ -65,5 +65,13 @@ public function CreateUsers(Request $request)
 
     }
 
+    public function destroy($id)
+    {
+        //
+        $deletUser = User::destroy($id);
+        return response()->json(['message' => 'user has been deleted']);
+        
+    }
+
         
 }
