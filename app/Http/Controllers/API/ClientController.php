@@ -6,17 +6,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Client;
 use App\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use App\Company;
 
 class ClientController extends Controller
 {
     //
     public function store(){
 
-            $client = new client();
+            $client = new company();
             $client ->name=$request->string('name');
             $client ->name=$request->string('address');
             $client -> save();
-            return response()->json(['success' => true,]);
+            return response()->json(['success' => true, $client]);
         }
 
     public function getClient(){
@@ -24,26 +27,26 @@ class ClientController extends Controller
             return response()->json(['success' => true, $getCli]);
         }
         
-public function CreateUsers(Request $request)    
+    public function CreateUsers(Request $request)    
             {
                 $this->validate($request, [
                     'username' => 'required|min:3|max:50',
                     'email' => 'required|min:3|max:50',
-                    'user_role' => 'nullable',
+                    'user_role' => 'required',
                     'first_name' => 'required|min:3|max:50',
                     'last_name' => 'required|min:3|max:50',
                     'phone' => 'required|min:3|max:50',
                     'password' => 'required|confirmed|min:6',
                     'password_confirmation' => '|required|same:password',
                 ]);
-                $user = new User([
+                $user = new client([
+                    'user_role' => $request->user_role,
                     'username' => $request->username,
                     'email' => $request->email,
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
-                    'user_role' => $request->usertype,
                     'phone' => preg_replace('/^0/','+234',$request->phone),
-                    'password' => Hash::make($request->password),
+                    'password' => Hash::make($request->password)
                 ]);
                 $user->save();
                 return response()->json(['message' => 'user has been registered'], 200); 
@@ -70,7 +73,7 @@ public function CreateUsers(Request $request)
         //
         $deletUser = User::destroy($id);
         return response()->json(['message' => 'user has been deleted']);
-        
+
     }
 
         
