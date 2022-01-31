@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
@@ -17,7 +18,6 @@ class AuthController extends Controller
         $this->validate($request, [
             'username' => 'required|min:3|max:50',
             'email' => 'required|min:3|max:50',
-            'usertype' => 'nullable',
             'first_name' => 'required|min:3|max:50',
             'last_name' => 'required|min:3|max:50',
             'city' => 'required|min:3|max:50',
@@ -34,7 +34,6 @@ class AuthController extends Controller
             'last_name' => $request->last_name,
             'city' => $request->city,
             'state' => $request->state,
-            'usertype' => $request->usertype,
             'country' => $request->country,
             'phone' => preg_replace('/^0/','+234',$request->phone),
             'password' => Hash::make($request->password),
@@ -80,6 +79,32 @@ class AuthController extends Controller
         return response()->json(["status" => "success", "error" => false, "message" => "Success! You are logged out."], 200);
         }
         return response()->json(["status" => "failed", "error" => true, "message" => "Failed! You are already logged out."], 403);
+    }
+
+
+    public function update(Request $request){
+        try {
+                $validator = Validator::make($request->all(),[
+                'company_name' => 'required|min:2|max:45',
+                'user_role' => 'required|min:2|max:45',
+                'usertype' => 'required',
+            ]);
+                if($validator->fails()){
+                    $error = $validator->errors()->all()[0];
+                    return response()->json(['status'=>'false', 'message'=>$error, 'data'=>[]],422);
+                }else{
+                    $user = user::find($request->user()->id);
+                            $user->company_name = $request->company_name;
+                            $user->user_role = $request->user_role;
+                            $user->usertype = $request->usertype;
+
+                            $user->update();
+                            return response()->json(['status'=>'true', 'message'=>"profile updated suuccessfully", 'data'=>$user]);
+                }
+    
+        }catch (\Exception $e){
+                    return response()->json(['status'=>'false', 'message'=>$e->getMessage(), 'data'=>[]], 500);
+        }
     }
 
 

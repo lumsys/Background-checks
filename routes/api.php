@@ -28,20 +28,18 @@ Route::namespace('API')->group(function () {
 
 Route::middleware(['auth:api'])->group(function () {
     // User Update and related activity
-    
        Route::get('details', 'AuthController@details');
        Route::get('logout', 'AuthController@logout');
+       Route::put('Update/{id}', 'AuthController@Update');
 
     
        // Company Users Functions
-
        Route::post('CreateUsers', 'CompanyController@CreateUsers');
        Route::put('UpdateCompany/{id}', 'CompanyController@UpdateCompany');
        Route::delete('destroy/{id}', 'CompanyController@destroy');
        Route::post('store', 'CompanyController@store');
 
        // Roles
-
        Route::post('storee', 'RoleController@store');
        Route::get('show', 'RoleController@show');
        Route::put('{roles}/attach', 'RoleController@attach');
