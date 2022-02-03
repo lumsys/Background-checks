@@ -24,6 +24,7 @@ Route::namespace('API')->group(function () {
     Route::post('login', 'AuthController@login');
     Route::post('register', 'AuthController@register');
     Route::get('getCompany', 'CompanyController@getCompany');
+    Route::post('forgot', 'ForgotController@forgot');
     
 
 Route::middleware(['auth:api'])->group(function () {
@@ -31,6 +32,7 @@ Route::middleware(['auth:api'])->group(function () {
        Route::get('details', 'AuthController@details');
        Route::get('logout', 'AuthController@logout');
        Route::put('Update/{id}', 'AuthController@Update');
+       
 
     
        // Company Users Functions
